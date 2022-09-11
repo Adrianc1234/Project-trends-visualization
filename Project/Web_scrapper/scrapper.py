@@ -28,8 +28,8 @@ class Instagram_Scrap:
         """
 
         credentials = dict()
-        credentials['username']='username'
-        credentials['password']='password'
+        credentials['username']='denisseericky'
+        credentials['password']='ED111804'
 
         print('\nLogging in…')
         self.driver.get('https://www.instagram.com')
