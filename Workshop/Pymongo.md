@@ -26,7 +26,7 @@ In this step we will activate the environment where we can install anything nece
 
 - `source ambiente/bin/activate`
 
-result:
+Result:
 ![Result](https://snipboard.io/iBmwx0.jpg)
 
 ### Installing our library to work
