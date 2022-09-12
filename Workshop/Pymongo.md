@@ -111,6 +111,15 @@ pip3 install pymongo
 # Introduction section
 
 ## Accessing to MongoDB client
+### What is Mongodb?
+
+MongoDB is a document database that offers great scalability and flexibility, and an advanced query and indexing model.
+
+### How does it work?
+
+MongoDB stores data in flexible documents similar to JSON, so fields may vary between documents and the data structure may change over time.
+
+![mongo_layer](https://media.geeksforgeeks.org/wp-content/uploads/20200120181841/Untitled-Diagram-1-13.jpg)
 
 ## Making our project
 
