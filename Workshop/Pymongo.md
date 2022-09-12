@@ -113,7 +113,19 @@ pip3 install pymongo
 ## Accessing to MongoDB client
 ### What is Mongodb?
 
-MongoDB is a document database that offers great scalability and flexibility, and an advanced query and indexing model.
+MongoDB is a document database that offers great scalability and flexibility, and an advanced query and indexing model. Is MongoDB good for anything and everything? Before defining why you should use MondoDB in your project, it is worth reviewing the pros and cons. MongoDB is a very interesting resource for developers but it is not perfect. For example:
+
+<i>Advantages</i>
+
+- Document validation
+- Integrated storage engines
+- Shorter recovery time in case of failures
+
+<i>Disadvantages</i>
+
+- Not a suitable solution for applications with complex transactions
+- No replacement for legacy solutions
+- Still a young technology
 
 ### How does it work?
 
@@ -121,7 +133,10 @@ MongoDB stores data in flexible documents similar to JSON, so fields may vary be
 
 <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200120181841/Untitled-Diagram-1-13.jpg" width="500" height="700">
 
-## Making our project
+# Workshop 
+---
+
+## Making our project in mongo db
 
 ## Accessing to our project & Making our database
 
