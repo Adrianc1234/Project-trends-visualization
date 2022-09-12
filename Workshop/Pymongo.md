@@ -119,7 +119,7 @@ MongoDB is a document database that offers great scalability and flexibility, an
 
 MongoDB stores data in flexible documents similar to JSON, so fields may vary between documents and the data structure may change over time.
 
-![mongo_layer](https://media.geeksforgeeks.org/wp-content/uploads/20200120181841/Untitled-Diagram-1-13.jpg)
+<img src="https://media.geeksforgeeks.org/wp-content/uploads/20200120181841/Untitled-Diagram-1-13.jpg" width="500" height="700">
 
 ## Making our project
 
