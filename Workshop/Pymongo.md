@@ -35,7 +35,26 @@ PyMongo is a native Python driver for MongoDB. Use MongoClient to create a conne
 
 - `pip3 install pymongo`
 
+### Installing the module to control our server
+
+In order to use mongo+srv protocol, you need to install pymongo-srv Launch this command to do it with python 3:
+
+`pip3 install pymongo[srv]`
+or this one for other versions:
+
+`pip install pymongo[srv]`
+And as suggested by @lukrebs, add quotes for ZSH:
+
+If the first one got failed, try with this one:
+`pip3 install 'pymongo[srv]'`
+
 <strong>So we are ready to work!</strong>
+
+### What if i want to finish?
+
+just write: `deactivate` in your console.
+
+![deactivate](https://snipboard.io/uzp2iF.jpg)
 
 ---
 
