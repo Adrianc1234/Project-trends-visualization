@@ -137,7 +137,16 @@ MongoDB stores data in flexible documents similar to JSON, so fields may vary be
 ---
 
 ## Making our project in mongo db
-ajhahaja
+
+### step 1
+we need to access or you already have an account for MongoBD site, would be better, but in case that not, just access to it using your gmail account in this page:
+
+[Click Here!](https://account.mongodb.com/account/login)
+
+You should see something like this page view:
+
+![Image](https://snipboard.io/V7k6SE.jpg)
+
 ## Accessing to our project & Making our database
 
 ## connecting it to python 3
