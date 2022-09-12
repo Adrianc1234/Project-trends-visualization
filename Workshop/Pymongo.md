@@ -104,6 +104,21 @@ PyMongo is a native Python driver for MongoDB. Use MongoClient to create a conne
 pip3 install pymongo
 ~~~
 
+Also we must install: 
+
+In order to use mongo+srv protocol, you need to install pymongo-srv Launch this command to do it with python 3:
+
+~~~
+pip3 install pymongo[srv]
+~~~
+or this one for other versions:
+~~~
+pip install pymongo[srv]
+~~~
+And as suggested by @lukrebs , add quotes for ZSH:
+~~~
+pip3 install 'pymongo[srv]'
+~~~
 <strong>So we are ready to work!</strong>
 
 ---
@@ -138,7 +153,7 @@ MongoDB stores data in flexible documents similar to JSON, so fields may vary be
 
 ## Making our project in mongo db
 
-### step 1
+### step 1 - Creating our account 
 we need to access or you already have an account for MongoBD site, would be better, but in case that not, just access to it using your gmail account in this page:
 
 [Click Here!](https://account.mongodb.com/account/login)
@@ -146,6 +161,12 @@ we need to access or you already have an account for MongoBD site, would be bett
 You should see something like this page view:
 
 ![Image](https://snipboard.io/V7k6SE.jpg)
+
+### step 2 - Creating a new project 
+
+In this step, we just need to create a new project to design our database, so in fact, it would be so easy. Please put your project name and click in the button `Next`. 
+
+![Image2](https://snipboard.io/6cNb3u.jpg)
 
 ## Accessing to our project & Making our database
 
