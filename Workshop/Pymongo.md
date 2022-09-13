@@ -176,7 +176,7 @@ In this step, we just need to change the main manager for this project. Then, a 
 
 ## Accessing to our project & Making our database
 
-## connecting it to python 3
+## Connecting it to python 3
 
 ## Commands & tutorial
 
