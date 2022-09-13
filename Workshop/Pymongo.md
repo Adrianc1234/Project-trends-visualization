@@ -174,8 +174,44 @@ In this step, we just need to change the main manager for this project. Then, a 
 
 ![Img3](https://snipboard.io/LbF7It.jpg)
 
-## so, Lets start with commands in python3!
+## Accessing to our project & Making our database
+
+### step 4 - Create a database
+
+Click the Build a Database button and in the next screen click Create in the free version.
+![Image3](https://snipboard.io/p5tRTF.jpg)
+![Image4](https://snipboard.io/jMm0Ge.jpg)
+
+Now scroll down on the new screen and it will appear like this, click Create Cluster.
+![Image5](https://snipboard.io/IgMKiU.jpg)
+
+After a couple seconds you will get this message Your cluster has finished provisioning. As shown in the image below, create a username and password. Then click on Create User.
+![Image6](https://snipboard.io/Jx7WZU.jpg)
+
+### step 5 - Connect
+
+Continuing on the same screen, Where would you like to connect from?, click on My local environment and then on Add My Current IP Address. Now Finish and Close.
+![Image7](https://snipboard.io/swc4Ye.jpg)
+
+You will get the following message, click on Go to Databases.
+![Image8](https://snipboard.io/WUKkZr.jpg)
 
 
+## Connecting it to python 3
+
+### Step 6 - Connect to python
+
+You will see this screen, click on Connect.
+![Image9](https://snipboard.io/GrQlYf.jpg)
+
+Now select Connect your Application.
+![Image10](https://snipboard.io/zCsXNS.jpg)
+
+In Select your driver and version change it to DRIVER Pythonand VERSION 3.12 or later, as shown in the image.
+![Image11](https://snipboard.io/SiE7xG.jpg)
+
+Now you can add your connection string into your application code!
+
+## Challenge Time
 
 
