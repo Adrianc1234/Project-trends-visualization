@@ -174,12 +174,8 @@ In this step, we just need to change the main manager for this project. Then, a 
 
 ![Img3](https://snipboard.io/LbF7It.jpg)
 
-## Accessing to our project & Making our database
+## so, Lets start with commands in python3!
 
-## Connecting it to python 3
 
-## Commands & tutorial
-
-## Challenge
 
 
