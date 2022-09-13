@@ -168,6 +168,12 @@ In this step, we just need to create a new project to design our database, so in
 
 ![Image2](https://snipboard.io/6cNb3u.jpg)
 
+### step 3 - Choosing our main manager for the project
+
+In this step, we just need to change the main manager for this project. Then, a button will appear below to do a click on it and create this project. Be patient because it could take some minutes.
+
+![Img3](https://snipboard.io/LbF7It.jpg)
+
 ## Accessing to our project & Making our database
 
 ## connecting it to python 3
