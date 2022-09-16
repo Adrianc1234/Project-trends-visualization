@@ -28,8 +28,8 @@ class Instagram_Scrap:
         """
 
         credentials = dict()
-        credentials['username']=''
-        credentials['password']=''
+        credentials['username']='user'
+        credentials['password']='password'
 
         print('\nLogging in…')
         self.driver.get('https://www.instagram.com')
@@ -69,7 +69,7 @@ class Instagram_Scrap:
         '''
 
         url = 'https://www.instagram.com/'
-        profile_name = "isaacchavezf" #str(input('Write the username:   '))
+        profile_name = "chris_duran28" #str(input('Write the username:   '))
         final_url = url + profile_name
         self.driver.get(final_url)
 
@@ -155,7 +155,7 @@ class Instagram_Scrap:
 
         number_likes_list = []
         dates = []
-
+        location_list = []
         for post in links_post:
             self.driver.get(post)
             time.sleep(4)
@@ -169,7 +169,15 @@ class Instagram_Scrap:
             dates_final = [node.get_attribute('datetime') for node in date]
             dates.append(dates_final)
 
-        return number_likes_list, dates, photos, links_post
+            try:
+                location = self.driver.find_elements(By.CSS_SELECTOR, 'div._aacl._aacn._aacu._aacy._aada._aade a')
+                location_list_final = [node.text for node in location]
+                location_list.append(location_list_final[0])
+            except:
+                location_list.append(None)
+
+
+        return number_likes_list, dates, photos, links_post, location_list
 
     def close(self):
         """Close the browser."""
