@@ -30,8 +30,8 @@ class Instagram_Scrap:
         """
 
         credentials = dict()
-        credentials['username']='Tasks_2206'
-        credentials['password']='TasksRemo123'
+        credentials['username']='isabelmontalvo23'
+        credentials['password']='MeghanTrainor22'
 
         print('\nLogging in…')
         self.driver.get('https://www.instagram.com')
@@ -108,8 +108,9 @@ class Instagram_Scrap:
         time.sleep(2)
         photos_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div[class="_aagu"] img')
         photos_final = [node.get_attribute('src') for node in photos_aux]
+        description_photo = [node.get_attribute('alt') for node in photos_aux]
 
-        return photos_final
+        return photos_final, description_photo
 
     
 
@@ -155,7 +156,9 @@ class Instagram_Scrap:
 
         links_post = self.extract_links_post()
         print(links_post,len(links_post))
-        photos = self.get_photos()
+        #photos, description_photo = self.get_photos()
+        photos = []
+        description_photos = []
 
         print('Extracting posts. Estimated time: ', 4*len(links_post))
 
@@ -181,10 +184,19 @@ class Instagram_Scrap:
                 location_list_final = [node.text for node in location]
                 location_list.append(location_list_final[0])
             except:
-                location_list.append(None)            
+                location_list.append(None) 
+
+            photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img')  
+            photos_final = [node.get_attribute('src') for node in photo_aux]   
+
+            description_photo = [node.get_attribute('alt') for node in photo_aux] 
+
+            photos.append(photos_final)
+            description_photos.append(description_photo)
 
 
-        return number_likes_list, dates, photos, links_post, location_list
+
+        return number_likes_list, dates, photos, description_photos, links_post, location_list
 
     def close(self):
         """Close the browser."""

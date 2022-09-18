@@ -16,7 +16,7 @@ info, name, description,verified, profession_final = web.extract_info_profile()
 print('Description:', description)
 
 # Extract general info of the profile: photos, number of likes, date
-number_likes_list, dates, photos, links_post, location_list, comments = web.extract_info_post()
+number_likes_list, dates, photos, description_photo, links_post, location_list, = web.extract_info_post()
 
 #It closes the browser
 web.close()
@@ -44,6 +44,7 @@ print(len(location_list))
 print("========")
 for i in location_list:
     print(i)
+    
 for i in range(len(photos)):
     user_posts[f'user_post{i}'] = {}
 
@@ -51,9 +52,9 @@ for i in range(len(photos)):
     user_posts[f'user_post{i}']['likes'] = (number_likes_list[i])
     user_posts[f'user_post{i}']['date'] = dates[i]
     user_posts[f'user_post{i}']['photo'] = photos[i]
+    user_posts[f'user_post{i}']['description_photo'] = description_photo[i]
     user_posts[f'user_post{i}']['url_post'] = links_post[i]
     user_posts[f'user_post{i}']['location'] = location_list[i]
-    user_posts[f'user_post{i}']['comments'] = location_list[i]
 
 user['posts_info'] = user_posts
 print(user)
