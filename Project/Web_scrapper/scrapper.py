@@ -14,7 +14,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 class Instagram_Scrap:
 
     def __init__(self): 
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        options = webdriver.ChromeOptions()
+        options.add_argument('--start-maximized')
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options = options)
 
     def close(self):
         """Close the browser."""
@@ -28,8 +30,8 @@ class Instagram_Scrap:
         """
 
         credentials = dict()
-        credentials['username']='user'
-        credentials['password']='password'
+        credentials['username']='Tasks_2206'
+        credentials['password']='TasksRemo123'
 
         print('\nLogging in…')
         self.driver.get('https://www.instagram.com')
@@ -69,7 +71,7 @@ class Instagram_Scrap:
         '''
 
         url = 'https://www.instagram.com/'
-        profile_name = "chris_duran28" #str(input('Write the username:   '))
+        profile_name = "toki.yomi" #str(input('Write the username:   '))
         final_url = url + profile_name
         self.driver.get(final_url)
 
@@ -85,13 +87,17 @@ class Instagram_Scrap:
             time.sleep(2)
             new_height = self.driver.execute_script("return document.body.scrollHeight")
             # Fetching Posts
-            posts=self.driver.find_elements(By.CSS_SELECTOR, 'div._aabd._aa8k._aanf a')
-            fetched_links=[post.get_attribute("href") for post in posts]
-            links=links.union(set(fetched_links))
-            if last_height == new_height:
+            posts = self.driver.find_elements(By.CSS_SELECTOR, 'div._aabd._aa8k._aanf a')
+
+            fetched_links = [post.get_attribute("href") for post in posts]
+
+            links = links.union(set(fetched_links))
+
+            if last_height == new_height or len(links) >= 50:
                 reached_page_end = True
             else:
                 last_height = new_height
+
         return list(links)
         
         
@@ -113,7 +119,7 @@ class Instagram_Scrap:
         profile_info = self.driver.find_elements(By.CSS_SELECTOR, 'li._aa_5 div._aacl._aacp._aacu._aacx._aad6._aade span')
         profile_info_final = [node.text for node in profile_info]
 
-        name_user = self.driver.find_elements(By.CSS_SELECTOR, 'div[class="_aa_c"] span[class="_aacl _aacp _aacw _adda _aacx _aad7 _aade"]')
+        name_user = self.driver.find_elements(By.CSS_SELECTOR, 'div[class="_aa_c"] span')
         name_user_final = [node.text for node in name_user]
 
         description = self.driver.find_elements(By.CSS_SELECTOR, 'div._aa_c div[class="_aacl _aacp _aacu _aacx _aad6 _aade"]')
@@ -148,14 +154,15 @@ class Instagram_Scrap:
     def extract_info_post(self):
 
         links_post = self.extract_links_post()
+        print(links_post,len(links_post))
         photos = self.get_photos()
 
         print('Extracting posts. Estimated time: ', 4*len(links_post))
 
-
         number_likes_list = []
         dates = []
         location_list = []
+
         for post in links_post:
             self.driver.get(post)
             time.sleep(4)
@@ -174,7 +181,7 @@ class Instagram_Scrap:
                 location_list_final = [node.text for node in location]
                 location_list.append(location_list_final[0])
             except:
-                location_list.append(None)
+                location_list.append(None)            
 
 
         return number_likes_list, dates, photos, links_post, location_list
