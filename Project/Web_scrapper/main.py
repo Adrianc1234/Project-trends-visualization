@@ -11,9 +11,8 @@ web.login()
 username = web.go_to_profile()
 
 # Extract number of posts, followers and followings
-info, name, description,verified, profession_final = web.extract_info_profile()
+info, profile_photo ,name, description,verified, profession_final = web.extract_info_profile()
 
-print('Description:', description)
 
 # Extract general info of the profile: photos, number of likes, date
 number_likes_list, dates, photos, description_photo, links_post, location_list, = web.extract_info_post()
@@ -31,6 +30,7 @@ user['username'] = username
 user['number_post'] = info[0]
 user['number_followers'] = info[1]
 user['number_followings'] = info[2]
+user['photo_profile'] = profile_photo
 user['real_name'] = name
 user['description'] = description
 user['verified'] = verified
@@ -40,8 +40,7 @@ user['profession'] = profession_final
 
 user_posts = dict()
 print(len(number_likes_list) , len(photos))
-print(len(location_list))
-print("========")
+
 for i in location_list:
     print(i)
     

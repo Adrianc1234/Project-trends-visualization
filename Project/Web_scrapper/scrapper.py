@@ -71,7 +71,7 @@ class Instagram_Scrap:
         '''
 
         url = 'https://www.instagram.com/'
-        profile_name = "toki.yomi" #str(input('Write the username:   '))
+        profile_name = "luisitocomunica" #str(input('Write the username:   '))
         final_url = url + profile_name
         self.driver.get(final_url)
 
@@ -84,7 +84,7 @@ class Instagram_Scrap:
         links=set()
         while not reached_page_end:   
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
+            time.sleep(3)
             new_height = self.driver.execute_script("return document.body.scrollHeight")
             # Fetching Posts
             posts = self.driver.find_elements(By.CSS_SELECTOR, 'div._aabd._aa8k._aanf a')
@@ -93,7 +93,7 @@ class Instagram_Scrap:
 
             links = links.union(set(fetched_links))
 
-            if last_height == new_height or len(links) >= 50:
+            if last_height == new_height or len(links) >= 36:
                 reached_page_end = True
             else:
                 last_height = new_height
@@ -112,11 +112,9 @@ class Instagram_Scrap:
 
         return photos_final, description_photo
 
-    
-
 
     def extract_info_profile(self):
-        time.sleep(2)
+        time.sleep(3)
         profile_info = self.driver.find_elements(By.CSS_SELECTOR, 'li._aa_5 div._aacl._aacp._aacu._aacx._aad6._aade span')
         profile_info_final = [node.text for node in profile_info]
 
@@ -147,10 +145,11 @@ class Instagram_Scrap:
         except:
             profession_final = None
 
+        profile_photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aarf._aarg span img')
+        profile_photo = [node.get_attribute('src') for node in profile_photo_aux]
+        
 
-
-
-        return profile_info_final, name_user_final, description_final, verified, profession_final
+        return profile_info_final, profile_photo , name_user_final, description_final, verified, profession_final
 
     def extract_info_post(self):
 
@@ -160,7 +159,7 @@ class Instagram_Scrap:
         photos = []
         description_photos = []
 
-        print('Extracting posts. Estimated time: ', 4*len(links_post))
+        print('Extracting posts. Estimated time: ', 6*len(links_post))
 
         number_likes_list = []
         dates = []
@@ -168,11 +167,16 @@ class Instagram_Scrap:
 
         for post in links_post:
             self.driver.get(post)
-            time.sleep(4)
+            time.sleep(6)
 
-            likes = self.driver.find_elements(By.CSS_SELECTOR, 'div._ab8w a div._aacl span')
-            number_likes_list_final = [node.text for node in likes]
-            number_likes_list.append(number_likes_list_final)
+            try:
+                likes = self.driver.find_elements(By.CSS_SELECTOR, 'div._ab8w a div._aacl span')
+                number_likes_list_final = [node.text for node in likes]
+                likes_final = number_likes_list_final[-1]
+                number_likes_list.append(likes_final)
+            except:
+                likes_final = None
+                number_likes_list.append(likes_final)
 
             
             date = self.driver.find_elements(By.CSS_SELECTOR,'time._aaqe')
@@ -186,15 +190,41 @@ class Instagram_Scrap:
             except:
                 location_list.append(None) 
 
-            photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img')  
-            photos_final = [node.get_attribute('src') for node in photo_aux]   
 
-            description_photo = [node.get_attribute('alt') for node in photo_aux] 
+            # 1 photo
+            try:
+                photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img') 
+                photos_final_aux = [node.get_attribute('src') for node in photo_aux] 
+                description_photo = [node.get_attribute('alt') for node in photo_aux] 
+                photos_final = photos_final_aux[0]
+            except:
+                print("Trying this atrribute: srcset")
+                photos_final = None
+                pass
+
+            try:
+                photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img') 
+                photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
+                description_photo = [node.get_attribute('alt') for node in photo_aux] 
+                photos_final = photos_final_aux[0]
+            except:
+                photos_final = None
+                print("Two photos or more")
+                pass
+
+            # 2 or more photos
+            try: 
+                photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aamh div img')
+                photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
+                photos_final = photos_final_aux
+                description_photo = [node.get_attribute('alt') for node in photo_aux] 
+            except:
+                print("Video")
+                photos_final = None
+                pass
 
             photos.append(photos_final)
             description_photos.append(description_photo)
-
-
 
         return number_likes_list, dates, photos, description_photos, links_post, location_list
 
