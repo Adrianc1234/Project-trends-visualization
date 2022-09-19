@@ -30,8 +30,8 @@ class Instagram_Scrap:
         """
 
         credentials = dict()
-        credentials['username']='isabelmontalvo23'
-        credentials['password']='MeghanTrainor22'
+        credentials['username']='Tasks_2206'
+        credentials['password']='TasksRemo123'
 
         print('\nLogging in…')
         self.driver.get('https://www.instagram.com')
@@ -100,9 +100,6 @@ class Instagram_Scrap:
 
         return list(links)
         
-        
-
-
     def get_photos(self):
     
         time.sleep(2)
@@ -118,7 +115,7 @@ class Instagram_Scrap:
         profile_info = self.driver.find_elements(By.CSS_SELECTOR, 'li._aa_5 div._aacl._aacp._aacu._aacx._aad6._aade span')
         profile_info_final = [node.text for node in profile_info]
 
-        name_user = self.driver.find_elements(By.CSS_SELECTOR, 'div[class="_aa_c"] span')
+        name_user = self.driver.find_elements(By.CSS_SELECTOR, 'div[class="_aa_c"] span._aacl')
         name_user_final = [node.text for node in name_user]
 
         description = self.driver.find_elements(By.CSS_SELECTOR, 'div._aa_c div[class="_aacl _aacp _aacu _aacx _aad6 _aade"]')
@@ -150,6 +147,19 @@ class Instagram_Scrap:
         
 
         return profile_info_final, profile_photo , name_user_final, description_final, verified, profession_final
+
+
+    def srcset_filter(self, srcset):
+        newUrls = []
+
+        try:
+            for item in srcset:
+                n_data = item.split(",")
+                newUrls.append(n_data[0][0:n_data[0].index(" ")])
+        except:
+            return newUrls
+
+        return newUrls
 
     def extract_info_post(self):
 
@@ -191,37 +201,61 @@ class Instagram_Scrap:
                 location_list.append(None) 
 
 
+            photo_fetched = False
+
             # 1 photo
             try:
                 photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img') 
                 photos_final_aux = [node.get_attribute('src') for node in photo_aux] 
                 description_photo = [node.get_attribute('alt') for node in photo_aux] 
                 photos_final = photos_final_aux[0]
+                photo_fetched = True
             except:
                 print("Trying this atrribute: srcset")
                 photos_final = None
                 pass
 
-            try:
-                photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img') 
-                photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
-                description_photo = [node.get_attribute('alt') for node in photo_aux] 
-                photos_final = photos_final_aux[0]
-            except:
-                photos_final = None
-                print("Two photos or more")
-                pass
+            if photo_fetched != True:
+                try:
+                    photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aato div img') 
+                    photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
+                    description_photo = [node.get_attribute('alt') for node in photo_aux] 
+                    photos_final_ = photos_final_aux[0]
+                    photos_final = self.srcset_filter(photos_final_)
+                    photo_fetched = True
+                except:
+                    photos_final = None
+                    print("Two photos or more")
+                    pass
 
             # 2 or more photos
-            try: 
-                photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aamh div img')
-                photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
-                photos_final = photos_final_aux
-                description_photo = [node.get_attribute('alt') for node in photo_aux] 
-            except:
-                print("Video")
-                photos_final = None
-                pass
+            if photo_fetched != True:
+                try:
+                    photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aa20 div._aagv img') 
+                    photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
+                    description_photo = [node.get_attribute('alt') for node in photo_aux] 
+                    photos_final_ = photos_final_aux[0]
+                    photos_final = self.srcset_filter(photos_final_)
+                    photo_fetched = True
+                except:
+                    photos_final = None
+                    print("Two photos or more")
+                    pass
+
+            
+            if photo_fetched != True:
+            # 2 or more photos
+                try: 
+                    photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aagu._aamh div img')
+                    photos_final_aux = [node.get_attribute('srcset') for node in photo_aux] 
+                    photos_final_ = photos_final_aux
+                    photos_final = self.srcset_filter(photos_final_)
+                    description_photo = [node.get_attribute('alt') for node in photo_aux] 
+                    photo_fetched = True
+                except:
+                    print("Video")
+                    photos_final = None
+                    pass
 
             photos.append(photos_final)
             description_photos.append(description_photo)

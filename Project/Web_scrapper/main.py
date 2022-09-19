@@ -45,6 +45,8 @@ for i in location_list:
     print(i)
     
 for i in range(len(photos)):
+
+    
     user_posts[f'user_post{i}'] = {}
 
     user_posts[f'user_post{i}']['id'] = i
@@ -61,13 +63,6 @@ print(user)
 
 with open("scrapper.json", "w") as outfile:
     json.dump(user, outfile)
-
-
-
-
-
-
-
 
 
 
