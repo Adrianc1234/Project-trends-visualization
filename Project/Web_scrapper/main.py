@@ -1,6 +1,6 @@
 from scrapper import Instagram_Scrap
 import json
-
+import os
 
 #Logging in 
 web = Instagram_Scrap()
@@ -64,5 +64,5 @@ print(user)
 with open("scrapper.json", "w") as outfile:
     json.dump(user, outfile)
 
-
-
+#execute the preprocess
+os.system("python3 preprocessing.py")
