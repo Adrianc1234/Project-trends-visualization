@@ -25,6 +25,9 @@ with open('style.css') as f:
 # page 1
 def requirements():
     #instagram logo centered
+    st.markdown('''
+        <div class="container2">
+        ''', unsafe_allow_html=True)
     st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png', width=200)
     st.title('Instagram Dashboard')
     st.subheader('By: Datastar 🪐')
@@ -60,11 +63,11 @@ def requirements():
 
     # button to go to page 2
     if st.button('Go'):
-        if validate_username(username):
-            if validate_username(personal_username):
+        if validate_username(personal_username):
+            if validate_username(username):
                 with st.spinner('Scrapping the data...'):
                     #here we need to scrape the data
-                    time.sleep(5)
+                    time.sleep(3)
                 st.balloons()
                 dashboard(username)
                 return username, True
@@ -76,6 +79,8 @@ def requirements():
 # page 2
 def dashboard(username):
     st.sidebar.title('Filters')
+    
+    all_posts = st.sidebar.checkbox('All posts', value = True)
     # title 
     col1, col2 = st.columns([5, 1])
     with col1:
@@ -89,26 +94,26 @@ def dashboard(username):
 
         st.image('https://i.pinimg.com/736x/5c/6a/99/5c6a9983d0c9eef8b3912a451cc8a27d.jpg', width=40)
     # insights
-    col1, col2, col3, col4 = st.columns(4)
+    col3, col4, col5, col6 = st.columns(4)
 
-    with col1:
+    with col3:
         #add profile picture
 
         st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png', width=100)
 
-    with col2:
+    with col4:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Followers', '1.2K')
 
-    with col3:
+    with col5:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Following', '200')
     
-    with col4:
+    with col6:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
@@ -117,14 +122,11 @@ def dashboard(username):
     # bio
     st.markdown('''This is the bio of the account''')
 
-    col5, col6 = st.columns([2, 1])
-    with col5:
-        # posts
-        all_posts = st.sidebar.checkbox('All posts', value=True)
+    col7, col8 = st.columns([2, 1])
+    with col7:
 
         if all_posts:
             st.markdown(''' ## Likes per post''')
-            
 
         else:
             # line chart with likes and comments 
@@ -133,22 +135,20 @@ def dashboard(username):
             format="MM/DD/YY")
 
             #Update title based on the slider.
-
             st.markdown('''## Likes per post in {}'''.format(date_to_filter))
 
-    with col6:
+    with col8:
         st.markdown('''## \#1 Post''')
 
-    col5, col6 = st.columns([2, 1])
+    col9, col10 = st.columns([2, 1])
 
-    with col5:
+    with col9:
 
         # dataframe with random date and likes
         chart_data = pd.DataFrame(
         np.random.randn(20),
         columns=['likes'])
 
-        all_posts = st.sidebar.checkbox('All posts', value=True, key='all_posts')
 
         if all_posts:
             #st.markdown(''' ## Likes per post''')
@@ -167,10 +167,10 @@ def dashboard(username):
             #Plot only points at the hour given by the slider.
             #filter_data = data[data["date/time"].dt.month == [month_to_filter]
 
-            #here we need to filter the datar
+            #here we need to filter the data
             st.line_chart(chart_data)
     
-    with col6:
+    with col10:
         # most liked post
         st.markdown('''
         <div class="container2">
@@ -179,77 +179,77 @@ def dashboard(username):
 
 
     # insights
-    col1, col2 = st.columns(2)
+    col11, col12 = st.columns(2)
 
-    with col1:
+    with col11:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.markdown('''## Likes''')
 
-    with col2:
+    with col12:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.markdown('''## Other insights''')
 
 
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    col13, col14, col15, col16, col17, col18 = st.columns(6)
 
-    with col1:
+    with col13:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Total', '1.2K')
 
-    with col2:
+    with col14:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Average', '200')
     
-    with col3:
+    with col15:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Median', '200')
 
-    with col4:
+    with col16:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Total', '1.2K')
 
-    with col5:
+    with col17:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Average', '200')
     
-    with col6:
+    with col18:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.metric('Median', '200')
 
 
-    col7, col8 = st.columns([3,1])
+    col19, col20 = st.columns([3,1])
 
-    with col7:
+    with col19:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.markdown('''## Locations''')
 
-    with col8:
+    with col20:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
         st.markdown('''## Top 5''')
 
-    col9, col10 = st.columns([2,1])
+    col21, col22 = st.columns([2,1])
   
-    with col9:
+    with col21:
         # df with random location 
         df2 = pd.DataFrame(
         np.random.randn(1000, 2) / [50, 50] + [20.97, -89.62],
@@ -257,7 +257,7 @@ def dashboard(username):
 
         st.map(df2)
     
-    with col10:
+    with col22:
     
         np.random.seed(19680801)
 
@@ -278,7 +278,5 @@ def dashboard(username):
 
         st.pyplot(fig)
 
-
-    
     
 requirements()
