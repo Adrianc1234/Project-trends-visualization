@@ -13,7 +13,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 class Instagram_Scrap:
 
-    def __init__(self): 
+    def __init__(self,username): 
+        self.username = username
         options = webdriver.ChromeOptions()
         options.add_argument('--start-maximized')
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options = options)
@@ -30,8 +31,8 @@ class Instagram_Scrap:
         """
 
         credentials = dict()
-        credentials['username']='Tasks_2206'
-        credentials['password']='TasksRemo123'
+        credentials['username']='adrianrobertocarmona@hotmail.com'
+        credentials['password']='HALO2015..'
 
         print('\nLogging in…')
         self.driver.get('https://www.instagram.com')
@@ -71,7 +72,7 @@ class Instagram_Scrap:
         '''
 
         url = 'https://www.instagram.com/'
-        profile_name = "luisitocomunica" #str(input('Write the username:   '))
+        profile_name = self.username #str(input('Write the username:   '))
         final_url = url + profile_name
         self.driver.get(final_url)
 
@@ -185,7 +186,7 @@ class Instagram_Scrap:
                 likes_final = number_likes_list_final[-1]
                 number_likes_list.append(likes_final)
             except:
-                likes_final = None
+                likes_final = 0
                 number_likes_list.append(likes_final)
 
             
@@ -211,7 +212,7 @@ class Instagram_Scrap:
                 photos_final = photos_final_aux[0]
                 photo_fetched = True
             except:
-                print("Trying this atrribute: srcset")
+                print("src was not matched")
                 photos_final = None
                 pass
 
@@ -225,7 +226,7 @@ class Instagram_Scrap:
                     photo_fetched = True
                 except:
                     photos_final = None
-                    print("Two photos or more")
+                    print("srcset was not matched")
                     pass
 
             # 2 or more photos
