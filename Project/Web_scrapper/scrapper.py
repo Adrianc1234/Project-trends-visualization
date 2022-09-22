@@ -143,7 +143,7 @@ class Instagram_Scrap:
         except:
             profession_final = None
 
-        profile_photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aarf._aarg span img')
+        profile_photo_aux = self.driver.find_elements(By.CSS_SELECTOR, 'div._aarf span img')
         profile_photo = [node.get_attribute('src') for node in profile_photo_aux]
         
 
