@@ -1,3 +1,4 @@
+from dashboard import check
 from scrapper import Instagram_Scrap
 import json
 import os
@@ -91,6 +92,5 @@ def execute(username):
 
     else:
         print("existe")
+        #mg.check_date(username)
         #os.system("python3 preprocessing.py")
-    
-

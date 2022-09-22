@@ -151,4 +151,13 @@ def check(username):
     else:
         return False
 
+def check(username):
+    myclient = MongoClient("mongodb+srv://general:General2022..@cluster0.mfzpwpz.mongodb.net/?retryWrites=true&w=majority")
+
+    # Calling the database from the cluster
+    db = myclient["IGinstagram"]
+    collection = db["scrapers"]
+    for i in collection.find({"username": username}):
+        print(i)
     
+
