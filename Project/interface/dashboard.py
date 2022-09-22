@@ -7,10 +7,15 @@ import numpy as np
 import time 
 from datetime import date
 import matplotlib.pyplot as plt
+import pymongo
+from pymongo import MongoClient
+import requests
+from PIL import Image
 
 # Instagram dashboard
 # multi page app with streamlit 
 # page change with button condition
+
 
 # page settings
 st.set_page_config(page_title = "Instagram Dashboard",
@@ -20,6 +25,42 @@ st.set_page_config(page_title = "Instagram Dashboard",
 # style
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+def check(username):
+
+    myclient = MongoClient("mongodb+srv://general:General2022..@cluster0.mfzpwpz.mongodb.net/?retryWrites=true&w=majority")
+
+    # Calling the database from the cluster
+    db = myclient["IGinstagram"]
+    collection = db["scrapers"]
+    r = []
+    for i in collection.find({"username": username}):
+        #print(i['username']) #ejemplo de uso para acceder a la info
+        #print(i['metrics']) #ejemplo 2 de uso para acceder a la info
+        return i['metrics'], i['p_info'], i['locations'], i['username']
+
+
+#LLAVES DEL DIC
+#_id
+#username
+#date_insertion
+#p_info
+#data_frame
+#locations
+#metrics
+
+
+db_metrics, db_info, db_location, db_username = check("auronplay")
+#print(db[0]['Average likes'])
+print(db_info)
+
+url_imagen = (db_info['photo_profile']['0'][0]) # El link de la imagen
+nombre_local_imagen = "profile.jpg" # El nombre con el que queremos guardarla
+imagen = requests.get(url_imagen).content
+with open(nombre_local_imagen, 'wb') as handler:
+    handler.write(imagen)
+
+# access to username from database
 
 
 # page 1
@@ -98,8 +139,13 @@ def dashboard(username):
 
     with col3:
         #add profile picture
+        st.markdown('''
+        <div class="container">
+        ''', unsafe_allow_html=True)
 
-        st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png', width=100)
+        image = Image.open('profile.jpg')
+        st.image(image, width=200)
+        
 
     with col4:
         st.markdown('''
@@ -117,7 +163,7 @@ def dashboard(username):
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Posts', '200')
+        st.metric('Posts', str(db_metrics[0]['Total posts']))
 
     # bio
     st.markdown('''This is the bio of the account''')
@@ -175,7 +221,8 @@ def dashboard(username):
         st.markdown('''
         <div class="container2">
         ''', unsafe_allow_html=True)
-        st.image('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png', width=200)
+        print(str(db_metrics[0]['Most liked']))
+        st.image(str(db_metrics[0]['Most liked']), width=200)
 
 
     # insights
@@ -191,7 +238,7 @@ def dashboard(username):
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.markdown('''## Other insights''')
+        st.markdown('''## Single photo vs other media''')
 
 
     col13, col14, col15, col16, col17, col18 = st.columns(6)
@@ -200,37 +247,37 @@ def dashboard(username):
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Total', '1.2K')
+        st.metric('Total', str(db_metrics[0]['Total likes']))
 
     with col14:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Average', '200')
+        st.metric('Average', str(db_metrics[0]['Average likes']))
     
     with col15:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Median', '200')
+        st.metric('Median', str(db_metrics[0]['Median likes']))
 
     with col16:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Total', '1.2K')
+        st.metric('Single Photos', str(db_metrics[0]['Photo count']))
 
     with col17:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Average', '200')
+        st.metric('Other Posts', str(db_metrics[0]['Other posts']))
     
     with col18:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Median', '200')
+       
 
 
     col19, col20 = st.columns([3,1])
@@ -279,4 +326,5 @@ def dashboard(username):
         st.pyplot(fig)
 
     
-requirements()
+#requirements()
+dashboard('auronplay')
