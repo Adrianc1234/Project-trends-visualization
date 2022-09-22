@@ -13,6 +13,11 @@ import requests
 from PIL import Image
 from math import pi
 import main as m
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 # Instagram dashboard
 # multi page app with streamlit 
