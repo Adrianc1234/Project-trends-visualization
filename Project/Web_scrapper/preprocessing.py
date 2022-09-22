@@ -33,8 +33,11 @@ for i in range(len(data2['likes'])):
     #data2['likes'][i] = str(data2['likes'][i]).replace("['","").replace("']","").replace("[","").replace("]","")
     #data2['likes'][i] = str(data2['likes'][i]).replace("', '', '', '","")
     data2['likes'][i] = str(data2['likes'][i]).replace("'","")
-    data2['likes'][i]=int(data2['likes'][i])
-
+    try:
+        data2['likes'][i]=int(data2['likes'][i])
+    except:
+        data2['likes'][i] = 0
+        
 for i in range(len(data2['date'])):
     data2['date'][i] = str(data2['date'][i]).replace("[","").replace("]","")
     data2['date'][i] = str(data2['date'][i]).replace("'","").replace("'","")
@@ -111,20 +114,20 @@ df_general3 =pd.concat([df[['number_followers','number_followings']], df], axis=
 # Metrics
 
 #Total Number of Post
-total_post=df_general2['id'].count()
+#total_post=df_general2['id'].count()
 
 #Total Number of likes
-total_likes=df_general2['likes'].sum()
+#total_likes=df_general2['likes'].sum()
 
 #Average likes
-average_likes=df_general2['likes'].mean()
+#average_likes=df_general2['likes'].mean()
 
 #Median likes
-median_likes=df_general2['likes'].median()
+#median_likes=df_general2['likes'].median()
 
 #df
-data_metrics = [{'Total posts': total_post, 'Total likes': total_likes, 'Average likes': average_likes, 'Median likes': median_likes}]
-df_metrics = pd.DataFrame(data_metrics)
+#data_metrics = [{'Total posts': total_post, 'Total likes': total_likes, 'Average likes': average_likes, 'Median likes': median_likes}]
+#df_metrics = pd.DataFrame(data_metrics)
 
 # Location
 latitude=[]
@@ -154,7 +157,9 @@ df_location["latitude"]=latitude
 df_location["longitude"]=longitude
 
 # Convert dataframes to json
-list_df = [df, df_general2, df_location, df_metrics]
+list_df = [df, df_general2, df_location]
 
 with open("final_merged.json", 'w') as outfile:
     outfile.write(json.dumps([df.to_dict() for df in list_df]))
+
+print("preprocessing finished.")
