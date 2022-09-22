@@ -52,7 +52,8 @@ def check(username):
 
 db_metrics, db_info, db_location, db_username = check("auronplay")
 #print(db[0]['Average likes'])
-print(db_info)
+#print(db_info)
+print(db_info['number_followings']['0'])
 
 url_imagen = (db_info['photo_profile']['0'][0]) # El link de la imagen
 nombre_local_imagen = "profile.jpg" # El nombre con el que queremos guardarla
@@ -132,8 +133,9 @@ def dashboard(username):
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-
-        st.image('https://i.pinimg.com/736x/5c/6a/99/5c6a9983d0c9eef8b3912a451cc8a27d.jpg', width=40)
+        if db_info['verified']['0'] == True:
+            
+            st.image('https://i.pinimg.com/736x/5c/6a/99/5c6a9983d0c9eef8b3912a451cc8a27d.jpg', width=50)
     # insights
     col3, col4, col5, col6 = st.columns(4)
 
@@ -151,13 +153,13 @@ def dashboard(username):
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Followers', '1.2K')
+        st.metric('Followers', db_info['number_followers']['0'])
 
     with col5:
         st.markdown('''
         <div class="container">
         ''', unsafe_allow_html=True)
-        st.metric('Following', '200')
+        st.metric('Following', db_info['number_followings']['0'])
     
     with col6:
         st.markdown('''
@@ -166,7 +168,9 @@ def dashboard(username):
         st.metric('Posts', str(db_metrics[0]['Total posts']))
 
     # bio
-    st.markdown('''This is the bio of the account''')
+    st.markdown('''### {}'''.format(db_info['real_name']['0'][0]))
+    st.markdown('''### {}'''.format(db_info['profession']['0'][0]))
+    st.markdown('''{}'''.format(db_info['description']['0']))
 
     col7, col8 = st.columns([2, 1])
     with col7:
@@ -189,11 +193,10 @@ def dashboard(username):
     col9, col10 = st.columns([2, 1])
 
     with col9:
-
-        # dataframe with random date and likes
+        #plot likes per picture
         chart_data = pd.DataFrame(
         np.random.randn(20),
-        columns=['likes'])
+        columns=['a'])
 
 
         if all_posts:
