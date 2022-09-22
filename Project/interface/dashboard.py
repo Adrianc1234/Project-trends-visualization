@@ -11,6 +11,8 @@ import pymongo
 from pymongo import MongoClient
 import requests
 from PIL import Image
+from math import pi
+import main as m
 
 # Instagram dashboard
 # multi page app with streamlit 
@@ -37,7 +39,7 @@ def check(username):
     for i in collection.find({"username": username}):
         #print(i['username']) #ejemplo de uso para acceder a la info
         #print(i['metrics']) #ejemplo 2 de uso para acceder a la info
-        return i['metrics'], i['p_info'], i['locations'], i['username']
+        return i['metrics'], i['p_info'], i['locations'], i['username'],i['data_frame']
 
 
 #LLAVES DEL DIC
@@ -50,17 +52,88 @@ def check(username):
 #metrics
 
 
-db_metrics, db_info, db_location, db_username = check("auronplay")
-#print(db[0]['Average likes'])
-#print(db_info)
-print(db_info['number_followings']['0'])
+#db_metrics, db_info, db_location, db_username, db_dataframe = check(username)
+
+"""
+metric_graph = []
+days = ['Friday','Sunday','Tuesday','Monday','Wednesday','Saturday','Thursday']
+for i in days:
+    fila = [i,db_metrics[0]['total likes day'][i], db_metrics[0]['avg likes day'][i]]
+    metric_graph.append(fila)
+df_likes = pd.DataFrame(metric_graph, columns=['day','t_likes_day', 'avg_likes_day'])
+print(df_likes)
+
+df_test = pd.DataFrame({
+'group': ['t_likes_day','avg_likes_day'],
+'Monday': [db_metrics[0]['total likes day']['Monday'],db_metrics[0]['avg likes day']['Monday']],
+'Thursday': [db_metrics[0]['total likes day']['Thursday'],db_metrics[0]['avg likes day']['Thursday']],
+'Wednesday': [db_metrics[0]['total likes day']['Wednesday'],db_metrics[0]['avg likes day']['Wednesday']],
+'Tuesday': [db_metrics[0]['total likes day']['Tuesday'],db_metrics[0]['avg likes day']['Tuesday']],
+'Friday': [db_metrics[0]['total likes day']['Friday'],db_metrics[0]['avg likes day']['Friday']],
+'Saturday': [db_metrics[0]['total likes day']['Saturday'],db_metrics[0]['avg likes day']['Saturday']],
+'Sunday': [db_metrics[0]['total likes day']['Sunday'],db_metrics[0]['avg likes day']['Sunday']]
+})
+
+print(df_test)
+
+
+########################################################
+# number of variable
+categories=list(df_test)[1:]
+N = len(categories)
+ 
+# What will be the angle of each axis in the plot? (we divide the plot / number of variable)
+angles = [n / float(N) * 2 * pi for n in range(N)]
+angles += angles[:1]
+ 
+# Initialise the spider plot
+ax = plt.subplot(111, polar=True)
+ 
+# If you want the first axis to be on top:
+ax.set_theta_offset(pi / 2)
+ax.set_theta_direction(-1)
+ 
+# Draw one axe per variable + add labels
+plt.xticks(angles[:-1], categories)
+ 
+# Draw ylabels
+ax.set_rlabel_position(0)
+plt.yticks([2000000,4000000,6000000,8000000,10000000], ["1","2","3","4","5"], color="grey", size=7)
+plt.ylim(0,40)
+ 
+
+# ------- PART 2: Add plots
+ 
+# Plot each individual = each line of the data
+# I don't make a loop, because plotting more than 3 groups makes the chart unreadable
+ 
+# Ind1
+values=df_test.loc[0].drop('group').values.flatten().tolist()
+values += values[:1]
+ax.plot(angles, values, linewidth=1, linestyle='solid', label="group A")
+ax.fill(angles, values, 'b', alpha=0.1)
+ 
+# Ind2
+values=df_test.loc[1].drop('group').values.flatten().tolist()
+values += values[:1]
+ax.plot(angles, values, linewidth=1, linestyle='solid', label="group B")
+ax.fill(angles, values, 'r', alpha=0.1)
+ 
+# Add legend
+plt.legend(loc='upper right', bbox_to_anchor=(0.1, 0.1))
+
+# Show the graph
+plt.savefig("img.png")
+
+############################################
+
 
 url_imagen = (db_info['photo_profile']['0'][0]) # El link de la imagen
 nombre_local_imagen = "profile.jpg" # El nombre con el que queremos guardarla
 imagen = requests.get(url_imagen).content
 with open(nombre_local_imagen, 'wb') as handler:
     handler.write(imagen)
-
+"""
 # access to username from database
 
 
@@ -110,8 +183,10 @@ def requirements():
                 with st.spinner('Scrapping the data...'):
                     #here we need to scrape the data
                     time.sleep(3)
+                
+                m.execute(username.replace('@',""))
                 st.balloons()
-                dashboard(username)
+                dashboard(username.replace('@',""))
                 return username, True
 
 
@@ -120,6 +195,15 @@ def requirements():
 
 # page 2
 def dashboard(username):
+    db_metrics, db_info, db_location, db_username, db_dataframe = check(username)
+    #overwrite image
+    print(db_info['photo_profile']['0'][0])
+    url_imagen = (db_info['photo_profile']['0'][0]) # El link de la imagen
+    nombre_local_imagen = "profile.jpg" # El nombre con el que queremos guardarla
+    imagen = requests.get(url_imagen).content
+    with open(nombre_local_imagen, 'wb') as handler:
+        handler.write(imagen)
+
     st.sidebar.title('Filters')
     
     all_posts = st.sidebar.checkbox('All posts', value = True)
@@ -169,7 +253,7 @@ def dashboard(username):
 
     # bio
     st.markdown('''### {}'''.format(db_info['real_name']['0'][0]))
-    st.markdown('''### {}'''.format(db_info['profession']['0'][0]))
+    st.markdown('''### {}'''.format(db_info['profession']['0']))
     st.markdown('''{}'''.format(db_info['description']['0']))
 
     col7, col8 = st.columns([2, 1])
@@ -194,14 +278,12 @@ def dashboard(username):
 
     with col9:
         #plot likes per picture
-        chart_data = pd.DataFrame(
-        np.random.randn(20),
-        columns=['a'])
+        chart_data = pd.read_json(db_dataframe)
 
 
         if all_posts:
             #st.markdown(''' ## Likes per post''')
-            st.line_chart(chart_data)
+            st.line_chart(chart_data['likes'])
 
         else:
             # line chart with likes and comments 
@@ -291,43 +373,22 @@ def dashboard(username):
         ''', unsafe_allow_html=True)
         st.markdown('''## Locations''')
 
-    with col20:
-        st.markdown('''
-        <div class="container">
-        ''', unsafe_allow_html=True)
-        st.markdown('''## Top 5''')
-
+    
     col21, col22 = st.columns([2,1])
   
     with col21:
         # df with random location 
-        df2 = pd.DataFrame(
-        np.random.randn(1000, 2) / [50, 50] + [20.97, -89.62],
-        columns=['lat', 'lon'])
+        dir = []
+        for i in range(0,len(db_location['location'])):
+            arr = [db_location['location'][str(i)], db_location['latitude'][str(i)], db_location['longitude'][str(i)]]
+            dir.append(arr)
+        df_loc = pd.DataFrame(dir, columns=['location','lat', 'lon'])
+        #print(df_loc)
 
-        st.map(df2)
+        st.map(df_loc)
     
     with col22:
-    
-        np.random.seed(19680801)
+        
+        st.dataframe(df_loc['location'])
 
-        plt.rcdefaults()
-        fig, ax = plt.subplots()
-
-        # Example data
-        people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
-        y_pos = np.arange(len(people))
-        performance = 3 + 10 * np.random.rand(len(people))
-        error = np.random.rand(len(people))
-
-        ax.barh(y_pos, performance, xerr=error, align='center')
-        ax.set_yticks(y_pos, labels=people)
-        ax.invert_yaxis()  # labels read top-to-bottom
-        ax.set_xlabel('Performance')
-        ax.set_title('How fast do you want to go today?')
-
-        st.pyplot(fig)
-
-    
-#requirements()
-dashboard('auronplay')
+requirements()
