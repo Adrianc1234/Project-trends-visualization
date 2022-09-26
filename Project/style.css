@@ -1,0 +1,25 @@
+div.stButton > button:first-child {
+    background-color: #EFEFEF;
+    color:#8E8E8E;
+    
+}
+div.stButton > button:hover{
+    background-color: #FFFFFF;
+    color:#8E8E8E;
+    border: 1px solid transparent;
+    border-image: linear-gradient(to bottom left,#C128BF, #EA3469, #F09737, #F6C944) 1; 
+    
+    }
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+.container2 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    }
